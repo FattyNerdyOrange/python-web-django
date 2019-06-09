@@ -1,0 +1,60 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block header %}
+	<h2>{{ topic }}</h2>
+{% endblock header %}
+
+{% block content %}
+	<p>Topic: {{ topic }}</p>
+
+	<p>Entries:</p>
+	<p>
+		<a href="{% url 'learning_logs:new_entry' topic.id %}">add new entry</a>	
+	</p>
+	<ul>
+	{% for entry in entries %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>
+					{{ entry.date_added|date:'M d, Y H:i' }}
+					<small>
+						<a href="{% url 'learning_logs:edit_entry' entry.id %}">
+							edit entry</a>
+					</small>
+				</h3>
+			</div>
+			<div class="panel-body">
+			{{ entry.text|linebreaks }}
+			</div>
+		</div> <!-- panel -->
+	{% empty %}
+		There are no entries in this topic yet.
+	{% endfor %}
+	</ul>
+
+	<p>Comments:</p>
+	<p>
+			<a href="{% url 'learning_logs:comment' topic.id %}">leave comment</a>
+	</p>
+	<ul>
+	{% for comment in comments %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>
+					{{ comment.date_added|date:'M d, Y H:i' }}
+					<small>
+						<p>
+							{{ current_username }}</p>
+					</small>
+				</h3>
+			</div>
+			<div class="panel-body">
+			{{ comment.text|linebreaks }}
+			</div>
+		</div> <!-- panel -->
+	{% empty %}
+		There are no comments in this topic yet.
+	{% endfor %}
+	</ul>
+
+{% endblock content %}
